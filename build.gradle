@@ -1,0 +1,5 @@
+plugins {
+alias libs.plugins.jetbrains.kotlin.jvm apply false
+alias libs.plugins.jetbrains.kotlin.plugin.spring apply false
+  alias libs.plugins.github.khalilou88.jnxplus
+}

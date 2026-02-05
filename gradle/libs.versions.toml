@@ -1,0 +1,14 @@
+[versions]
+kotlin = "1.9.21"
+java = "17"
+spring-boot = "3.2.0"
+
+[libraries]
+
+
+[plugins]
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+github-khalilou88-jnxplus = { id = "io.github.khalilou88.jnxplus", version = "0.4.0" }
+springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.4" }

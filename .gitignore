@@ -40,3 +40,15 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
+
+
+# Gradle
+.gradle
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Next.js
+.next
+out

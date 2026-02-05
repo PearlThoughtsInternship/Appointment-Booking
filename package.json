@@ -4,18 +4,40 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@effect/platform": "^0.94.3",
+    "@effect/platform-node": "^0.104.1",
+    "@effect/schema": "^0.75.5",
+    "@jnxplus/nx-gradle": "^2.1.0",
+    "@nx/vite": "^22.4.5",
+    "@vitest/coverage-v8": "^4.0.18",
+    "effect": "^3.19.16",
+    "next": "~16.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vitest": "^4.0.18"
+  },
   "devDependencies": {
+    "@nx/esbuild": "22.4.5",
     "@nx/js": "22.4.5",
+    "@nx/next": "22.4.5",
+    "@nx/node": "22.4.5",
     "@swc-node/register": "~1.9.1",
+    "@swc/cli": "~0.6.0",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/node": "20.19.9",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "esbuild": "^0.19.2",
     "nx": "22.4.5",
     "prettier": "~3.6.2",
+    "prettier-plugin-java": "2.5.0",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ]
 }

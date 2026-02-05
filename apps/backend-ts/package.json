@@ -1,0 +1,112 @@
+{
+  "name": "@appointment-booking/backend-ts",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "platform": "node",
+          "outputPath": "apps/backend-ts/dist",
+          "format": [
+            "cjs"
+          ],
+          "bundle": false,
+          "main": "apps/backend-ts/src/main.ts",
+          "tsConfig": "apps/backend-ts/tsconfig.app.json",
+          "assets": [
+            "apps/backend-ts/src/assets"
+          ],
+          "esbuildOptions": {
+            "sourcemap": true,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        },
+        "configurations": {
+          "development": {},
+          "production": {
+            "esbuildOptions": {
+              "sourcemap": false,
+              "outExtension": {
+                ".js": ".js"
+              }
+            }
+          }
+        }
+      },
+      "prune-lockfile": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "executor": "@nx/js:prune-lockfile",
+        "outputs": [
+          "{workspaceRoot}/apps/backend-ts/dist/package.json",
+          "{workspaceRoot}/apps/backend-ts/dist/bun.lock"
+        ],
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "copy-workspace-modules": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "outputs": [
+          "{workspaceRoot}/apps/backend-ts/dist/workspace_modules"
+        ],
+        "executor": "@nx/js:copy-workspace-modules",
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "prune": {
+        "dependsOn": [
+          "prune-lockfile",
+          "copy-workspace-modules"
+        ],
+        "executor": "nx:noop"
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@appointment-booking/backend-ts:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@appointment-booking/backend-ts:build:development"
+          },
+          "production": {
+            "buildTarget": "@appointment-booking/backend-ts:build:production"
+          }
+        }
+      },
+      "test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "apps/backend-ts/vitest.config.ts"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "effect": "*",
+    "@effect/platform": "*",
+    "@effect/platform-node": "*",
+    "@effect/schema": "*"
+  }
+}

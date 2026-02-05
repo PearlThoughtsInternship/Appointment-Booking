@@ -1,0 +1,34 @@
+{
+  "name": "backend-kotlin",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "./apps/backend-kotlin/backend-kotlin/src",
+  "targets": {
+    "build": {
+      "executor": "@jnxplus/nx-gradle:run-task",
+      "outputs": ["{projectRoot}/build"],
+      "options": {
+        "task": "bootJar"
+      }
+    },
+    "build-image": {
+      "executor": "@jnxplus/nx-gradle:run-task",
+      "options": {
+        "task": "bootBuildImage"
+      }
+    },
+    "serve": {
+      "executor": "@jnxplus/nx-gradle:run-task",
+      "options": {
+        "task": "bootRun"
+      }
+    },
+    "test": {
+      "executor": "@jnxplus/nx-gradle:run-task",
+      "options": {
+        "task": "test"
+      }
+    }
+  },
+  "tags": []
+}
