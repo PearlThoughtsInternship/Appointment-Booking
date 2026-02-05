@@ -15,7 +15,7 @@ This project is designed to teach **production-grade backend development**:
 
 | Skill | Technologies | Documentation |
 |-------|--------------|---------------|
-| **API Design** | REST, OpenAPI 3.1, JSON:API | [API Guide](docs/guides/API-DESIGN.md) |
+| **API Design** | REST, OpenAPI 3.1, JSON:API | [OpenAPI Guide](docs/api/OPENAPI.md) |
 | **Dual-Stack Development** | Effect-TS vs Kotlin comparison | [Architecture](docs/architecture/SYSTEM.md) |
 | **API Testing** | Contract testing, Integration, E2E | [Testing Guide](docs/guides/API-TESTING.md) |
 | **Cloud Deployment** | AWS, Hetzner, Docker | [Deployment](docs/guides/CLOUD-DEPLOYMENT.md) |
@@ -203,13 +203,15 @@ npx nx test:contract backend-ts
 
 ## 📊 API Documentation Tools Comparison
 
-| Tool | Type | Best For | Setup Guide |
-|------|------|----------|-------------|
+| Tool | Type | Best For | Resources |
+|------|------|----------|-----------|
 | **OpenAPI 3.1** | Specification | Source of truth | [Guide](docs/api/OPENAPI.md) |
-| **Swagger UI** | Interactive docs | Developer portal | [Guide](docs/api/SWAGGER.md) |
-| **Hoppscotch** | API client | Free, open-source | [Guide](docs/api/HOPPSCOTCH.md) |
-| **Postman** | API client | Team collaboration | [Guide](docs/api/POSTMAN.md) |
-| **Bruno** | API client | Git-versioned collections | [Guide](docs/api/BRUNO.md) |
+| **Swagger UI** | Interactive docs | Developer portal | [swagger.io](https://swagger.io/tools/swagger-ui/) |
+| **Hoppscotch** | API client | Free, open-source | [hoppscotch.io](https://hoppscotch.io/) |
+| **Postman** | API client | Team collaboration | [postman.com](https://www.postman.com/) |
+| **Bruno** | API client | Git-versioned collections | [usebruno.com](https://www.usebruno.com/) |
+
+> 📖 See [API Testing Guide](docs/guides/API-TESTING.md) for detailed setup instructions for each tool.
 
 ---
 

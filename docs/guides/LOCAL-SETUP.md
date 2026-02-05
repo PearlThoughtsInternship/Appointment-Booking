@@ -412,7 +412,7 @@ npx nx test backend-ts
 
 ## Next Steps
 
-- 📖 Read [API Design Guide](./API-DESIGN.md)
+- 📖 Read [OpenAPI Guide](../api/OPENAPI.md)
 - 🧪 Learn [API Testing](./API-TESTING.md)
 - 🤖 Try [AI-Assisted Development](./AI-ASSISTED-DEV.md)
 
