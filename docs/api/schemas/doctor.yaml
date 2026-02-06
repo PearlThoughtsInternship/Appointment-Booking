@@ -1,0 +1,360 @@
+components:
+  schemas:
+
+    Doctor:
+      type: object
+      description: Represents a registered doctor in the system
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the doctor
+          example: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+          readOnly: true
+
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Full name of the doctor
+          example: "Dr. Anil Sharma"
+
+        specialization:
+          type: string
+          description: Medical specialization
+          enum:
+            - Cardiology
+            - Dermatology
+            - Neurology
+            - Orthopedics
+            - Pediatrics
+            - Psychiatry
+            - Radiology
+            - General Medicine
+            - Gynecology
+            - Ophthalmology
+            - ENT
+            - Dentistry
+          example: "Cardiology"
+
+        registrationNumber:
+          type: string
+          pattern: '^[A-Z]{2,4}-[0-9]{5,8}$'
+          description: Medical council registration number (e.g., MCI-123456, GMC-7654321)
+          example: "MCI-123456"
+
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+          maximum: 60
+          description: Total years of medical practice
+          example: 10
+
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100000
+          description: Consultation fee in INR
+          example: 500.00
+
+        contactEmail:
+          type: string
+          format: email
+          description: Professional email address
+          example: "dr.sharma@hospital.com"
+
+        contactPhone:
+          type: string
+          pattern: '^\+?[1-9]\d{9,14}$'
+          description: Contact phone number in E.164 format
+          example: "+919876543210"
+
+        clinicAddress:
+          type: string
+          maxLength: 500
+          description: Primary clinic or hospital address
+          example: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+
+        isActive:
+          type: boolean
+          description: Whether the doctor is currently available for appointments
+          example: true
+          readOnly: true
+
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the doctor was registered
+          example: "2026-02-05T10:15:30Z"
+          readOnly: true
+
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of last update
+          example: "2026-02-05T14:20:15Z"
+          readOnly: true
+
+      required:
+        - id
+        - name
+        - specialization
+        - registrationNumber
+        - yearsOfExperience
+        - consultationFee
+        - contactEmail
+        - contactPhone
+        - isActive
+        - createdAt
+        - updatedAt
+
+
+    DoctorCreateRequest:
+      type: object
+      description: Payload to register a new doctor in the system
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Full name of the doctor
+          example: "Dr. Anil Sharma"
+
+        specialization:
+          type: string
+          description: Medical specialization
+          enum:
+            - Cardiology
+            - Dermatology
+            - Neurology
+            - Orthopedics
+            - Pediatrics
+            - Psychiatry
+            - Radiology
+            - General Medicine
+            - Gynecology
+            - Ophthalmology
+            - ENT
+            - Dentistry
+          example: "Cardiology"
+
+        registrationNumber:
+          type: string
+          pattern: '^[A-Z]{2,4}-[0-9]{5,8}$'
+          description: Medical council registration number
+          example: "MCI-123456"
+
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+          maximum: 60
+          description: Total years of medical practice
+          example: 10
+
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100000
+          description: Consultation fee in INR
+          example: 500.00
+
+        contactEmail:
+          type: string
+          format: email
+          description: Professional email address
+          example: "dr.sharma@hospital.com"
+
+        contactPhone:
+          type: string
+          pattern: '^\+?[1-9]\d{9,14}$'
+          description: Contact phone number
+          example: "+919876543210"
+
+        clinicAddress:
+          type: string
+          maxLength: 500
+          description: Primary clinic or hospital address
+          example: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+
+      required:
+        - name
+        - specialization
+        - registrationNumber
+        - yearsOfExperience
+        - consultationFee
+        - contactEmail
+        - contactPhone
+
+
+    DoctorUpdateRequest:
+      type: object
+      description: Payload to update doctor details (all fields optional)
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Full name of the doctor
+          example: "Dr. Anil Kumar Sharma"
+
+        specialization:
+          type: string
+          description: Medical specialization
+          enum:
+            - Cardiology
+            - Dermatology
+            - Neurology
+            - Orthopedics
+            - Pediatrics
+            - Psychiatry
+            - Radiology
+            - General Medicine
+            - Gynecology
+            - Ophthalmology
+            - ENT
+            - Dentistry
+          example: "Cardiology"
+
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+          maximum: 60
+          description: Total years of medical practice
+          example: 12
+
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100000
+          description: Consultation fee in INR
+          example: 600.00
+
+        contactEmail:
+          type: string
+          format: email
+          description: Professional email address
+          example: "dr.sharma@newclinic.com"
+
+        contactPhone:
+          type: string
+          pattern: '^\+?[1-9]\d{9,14}$'
+          description: Contact phone number
+          example: "+919876543210"
+
+        clinicAddress:
+          type: string
+          maxLength: 500
+          description: Primary clinic or hospital address
+          example: "Sterling Hospital, Gurukul Road, Ahmedabad, Gujarat 380052"
+
+
+    DoctorListResponse:
+      type: object
+      description: Paginated list of doctors with metadata
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Doctor'
+          description: Array of doctor objects
+
+        pagination:
+          type: object
+          description: Pagination metadata
+          properties:
+            total:
+              type: integer
+              description: Total number of doctors matching the query
+              example: 156
+            page:
+              type: integer
+              description: Current page number (1-indexed)
+              example: 1
+            pageSize:
+              type: integer
+              description: Number of items per page
+              example: 20
+            totalPages:
+              type: integer
+              description: Total number of pages
+              example: 8
+          required:
+            - total
+            - page
+            - pageSize
+            - totalPages
+
+      required:
+        - data
+        - pagination
+
+
+    ErrorResponse:
+      type: object
+      description: Standard error response format used across all endpoints
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              example: "DOCTOR_NOT_FOUND"
+            message:
+              type: string
+              description: Human-readable error message
+              example: "Doctor with id 9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234 not found"
+            details:
+              type: object
+              nullable: true
+              description: Additional error details (optional)
+              example: null
+          required:
+            - code
+            - message
+
+      required:
+        - error
+
+
+    ValidationErrorResponse:
+      type: object
+      description: Response format for validation errors
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              example: "Request validation failed"
+            details:
+              type: object
+              properties:
+                fields:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      field:
+                        type: string
+                        example: "contactEmail"
+                      message:
+                        type: string
+                        example: "Must be a valid email address"
+                    required:
+                      - field
+                      - message
+              required:
+                - fields
+          required:
+            - code
+            - message
+            - details
+      required:
+        - error
