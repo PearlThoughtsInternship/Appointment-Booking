@@ -18,6 +18,15 @@
         "${workspaceFolder}/apps/backend-ts/dist/**/*.(m|c|)js",
         "!**/node_modules/**"
       ]
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Debug backend-java (Spring Boot)",
+      "mainClass": "com.pearthoughts.appointmentbooking.AppointmentBookingApplication",
+      "projectName": "backend-java",
+      "envFile": "${workspaceFolder}/apps/backend-java/.env",
+      "console": "integratedTerminal"
     }
   ]
 }

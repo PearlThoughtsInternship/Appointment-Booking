@@ -1,2 +1,3 @@
 rootProject.name = 'root-project'
 include(':apps:backend-kotlin:backend-kotlin')
+include(':apps:backend-java')
