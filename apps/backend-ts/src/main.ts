@@ -1,7 +1,9 @@
+import "dotenv/config"
 import { HttpRouter, HttpServer, HttpServerResponse } from "@effect/platform"
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node"
 import { Layer } from "effect"
 import { createServer } from "node:http"
+import { googleAuthHandler } from "./auth"
 
 // Define the router with routes
 const router = HttpRouter.empty.pipe(
@@ -18,9 +20,11 @@ const router = HttpRouter.empty.pipe(
     HttpServerResponse.json({
       name: "Appointment Booking API (Effect-TS)",
       version: "0.1.0",
-      endpoints: ["/health", "/api/v1"],
+      endpoints: ["/health", "/auth/google"],
     })
-  )
+  ),
+  // ✅ Correct way to register route
+  HttpRouter.post("/auth/google", googleAuthHandler)
 )
 
 // Set up the application server with logging

@@ -104,9 +104,12 @@
     }
   },
   "dependencies": {
-    "effect": "*",
     "@effect/platform": "*",
     "@effect/platform-node": "*",
-    "@effect/schema": "*"
+    "@effect/schema": "*",
+    "dotenv": "^17.2.4",
+    "effect": "*",
+    "google-auth-library": "^10.5.0",
+    "jsonwebtoken": "^9.0.3"
   }
 }
