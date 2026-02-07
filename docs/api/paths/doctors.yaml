@@ -1,0 +1,635 @@
+paths:
+  /doctors:
+    get:
+      summary: List all doctors
+      description: |
+        Retrieve a paginated list of registered doctors with optional filtering.
+        Supports filtering by specialization, active status, and search by name.
+      operationId: listDoctors
+      tags:
+        - Doctors
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+
+        - name: pageSize
+          in: query
+          description: Number of items per page (max 100)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+
+        - name: specialization
+          in: query
+          description: Filter by medical specialization
+          required: false
+          schema:
+            type: string
+            enum:
+              - Cardiology
+              - Dermatology
+              - Neurology
+              - Orthopedics
+              - Pediatrics
+              - Psychiatry
+              - Radiology
+              - General Medicine
+              - Gynecology
+              - Ophthalmology
+              - ENT
+              - Dentistry
+            example: "Cardiology"
+
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+            example: true
+
+        - name: search
+          in: query
+          description: Search by doctor name (minimum 2 characters)
+          required: false
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 100
+            example: "Sharma"
+
+        - name: sortBy
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            enum:
+              - name
+              - yearsOfExperience
+              - consultationFee
+              - createdAt
+            default: "name"
+            example: "consultationFee"
+
+        - name: sortOrder
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: "asc"
+            example: "asc"
+
+      responses:
+        '200':
+          description: Successfully retrieved list of doctors
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/DoctorListResponse'
+              examples:
+                success:
+                  summary: Successful response with doctors
+                  value:
+                    data:
+                      - id: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+                        name: "Dr. Anil Sharma"
+                        specialization: "Cardiology"
+                        registrationNumber: "MCI-123456"
+                        yearsOfExperience: 10
+                        consultationFee: 500.00
+                        contactEmail: "dr.sharma@hospital.com"
+                        contactPhone: "+919876543210"
+                        clinicAddress: "Apollo Hospital, Ahmedabad"
+                        isActive: true
+                        createdAt: "2026-02-05T10:15:30Z"
+                        updatedAt: "2026-02-05T10:15:30Z"
+                      - id: "7a1b3c2d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"
+                        name: "Dr. Priya Patel"
+                        specialization: "Pediatrics"
+                        registrationNumber: "MCI-789012"
+                        yearsOfExperience: 8
+                        consultationFee: 400.00
+                        contactEmail: "dr.patel@clinic.com"
+                        contactPhone: "+919876543211"
+                        clinicAddress: "Sterling Hospital, Ahmedabad"
+                        isActive: true
+                        createdAt: "2026-02-04T14:30:00Z"
+                        updatedAt: "2026-02-04T14:30:00Z"
+                    pagination:
+                      total: 156
+                      page: 1
+                      pageSize: 20
+                      totalPages: 8
+
+                empty:
+                  summary: No doctors found
+                  value:
+                    data: []
+                    pagination:
+                      total: 0
+                      page: 1
+                      pageSize: 20
+                      totalPages: 0
+
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+              examples:
+                invalidPage:
+                  summary: Invalid page number
+                  value:
+                    error:
+                      code: "VALIDATION_ERROR"
+                      message: "Request validation failed"
+                      details:
+                        fields:
+                          - field: "page"
+                            message: "Must be greater than or equal to 1"
+
+                invalidSpecialization:
+                  summary: Invalid specialization
+                  value:
+                    error:
+                      code: "VALIDATION_ERROR"
+                      message: "Request validation failed"
+                      details:
+                        fields:
+                          - field: "specialization"
+                            message: "Must be one of: Cardiology, Dermatology, Neurology, Orthopedics, Pediatrics, Psychiatry, Radiology, General Medicine, Gynecology, Ophthalmology, ENT, Dentistry"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
+
+    post:
+      summary: Register new doctor
+      description: |
+        Register a new doctor in the system. Requires all mandatory fields including
+        medical registration number, contact details, and specialization.
+      operationId: createDoctor
+      tags:
+        - Doctors
+      requestBody:
+        required: true
+        description: Doctor registration details
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/doctor.yaml#/components/schemas/DoctorCreateRequest'
+            examples:
+              cardiologist:
+                summary: Register a cardiologist
+                value:
+                  name: "Dr. Anil Sharma"
+                  specialization: "Cardiology"
+                  registrationNumber: "MCI-123456"
+                  yearsOfExperience: 10
+                  consultationFee: 500.00
+                  contactEmail: "dr.sharma@hospital.com"
+                  contactPhone: "+919876543210"
+                  clinicAddress: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+
+              pediatrician:
+                summary: Register a pediatrician
+                value:
+                  name: "Dr. Priya Patel"
+                  specialization: "Pediatrics"
+                  registrationNumber: "MCI-789012"
+                  yearsOfExperience: 8
+                  consultationFee: 400.00
+                  contactEmail: "dr.patel@clinic.com"
+                  contactPhone: "+919876543211"
+                  clinicAddress: "Sterling Hospital, Gurukul Road, Ahmedabad, Gujarat 380052"
+
+      responses:
+        '201':
+          description: Doctor successfully created
+          headers:
+            Location:
+              description: URI of the created doctor resource
+              schema:
+                type: string
+                example: "/api/v1/doctors/9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/Doctor'
+              example:
+                id: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+                name: "Dr. Anil Sharma"
+                specialization: "Cardiology"
+                registrationNumber: "MCI-123456"
+                yearsOfExperience: 10
+                consultationFee: 500.00
+                contactEmail: "dr.sharma@hospital.com"
+                contactPhone: "+919876543210"
+                clinicAddress: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+                isActive: true
+                createdAt: "2026-02-05T10:15:30Z"
+                updatedAt: "2026-02-05T10:15:30Z"
+
+        '400':
+          description: Validation error or invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+              examples:
+                missingFields:
+                  summary: Missing required fields
+                  value:
+                    error:
+                      code: "VALIDATION_ERROR"
+                      message: "Request validation failed"
+                      details:
+                        fields:
+                          - field: "name"
+                            message: "Field is required"
+                          - field: "registrationNumber"
+                            message: "Field is required"
+
+                invalidFormat:
+                  summary: Invalid field format
+                  value:
+                    error:
+                      code: "VALIDATION_ERROR"
+                      message: "Request validation failed"
+                      details:
+                        fields:
+                          - field: "contactEmail"
+                            message: "Must be a valid email address"
+                          - field: "registrationNumber"
+                            message: "Must match pattern: ^[A-Z]{2,4}-[0-9]{5,8}$"
+
+        '409':
+          description: Conflict - Doctor with this registration number already exists
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_ALREADY_EXISTS"
+                  message: "Doctor with registration number MCI-123456 already exists"
+                  details:
+                    registrationNumber: "MCI-123456"
+                    existingDoctorId: "7a1b3c2d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
+
+
+  /doctors/{doctorId}:
+    parameters:
+      - name: doctorId
+        in: path
+        required: true
+        description: Unique identifier of the doctor
+        schema:
+          type: string
+          format: uuid
+          example: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+
+    get:
+      summary: Get doctor by ID
+      description: Retrieve detailed information about a specific doctor
+      operationId: getDoctorById
+      tags:
+        - Doctors
+      responses:
+        '200':
+          description: Successfully retrieved doctor details
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/Doctor'
+              example:
+                id: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+                name: "Dr. Anil Sharma"
+                specialization: "Cardiology"
+                registrationNumber: "MCI-123456"
+                yearsOfExperience: 10
+                consultationFee: 500.00
+                contactEmail: "dr.sharma@hospital.com"
+                contactPhone: "+919876543210"
+                clinicAddress: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+                isActive: true
+                createdAt: "2026-02-05T10:15:30Z"
+                updatedAt: "2026-02-05T10:15:30Z"
+
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_NOT_FOUND"
+                  message: "Doctor with id 9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234 not found"
+                  details: null
+
+        '400':
+          description: Invalid doctor ID format
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+              example:
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Request validation failed"
+                  details:
+                    fields:
+                      - field: "doctorId"
+                        message: "Must be a valid UUID"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
+
+    put:
+      summary: Update doctor details
+      description: |
+        Update an existing doctor's information. All fields in the request body are optional.
+        Only provided fields will be updated.
+      operationId: updateDoctor
+      tags:
+        - Doctors
+      requestBody:
+        required: true
+        description: Updated doctor details
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/doctor.yaml#/components/schemas/DoctorUpdateRequest'
+            examples:
+              updateFee:
+                summary: Update consultation fee
+                value:
+                  consultationFee: 600.00
+
+              updateMultipleFields:
+                summary: Update multiple fields
+                value:
+                  yearsOfExperience: 12
+                  consultationFee: 600.00
+                  clinicAddress: "Sterling Hospital, Gurukul Road, Ahmedabad, Gujarat 380052"
+
+      responses:
+        '200':
+          description: Doctor successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/Doctor'
+              example:
+                id: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+                name: "Dr. Anil Sharma"
+                specialization: "Cardiology"
+                registrationNumber: "MCI-123456"
+                yearsOfExperience: 12
+                consultationFee: 600.00
+                contactEmail: "dr.sharma@hospital.com"
+                contactPhone: "+919876543210"
+                clinicAddress: "Sterling Hospital, Gurukul Road, Ahmedabad, Gujarat 380052"
+                isActive: true
+                createdAt: "2026-02-05T10:15:30Z"
+                updatedAt: "2026-02-05T15:30:45Z"
+
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+              example:
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Request validation failed"
+                  details:
+                    fields:
+                      - field: "contactEmail"
+                        message: "Must be a valid email address"
+
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_NOT_FOUND"
+                  message: "Doctor with id 9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234 not found"
+                  details: null
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
+
+    delete:
+      summary: Delete doctor
+      description: |
+        Soft delete a doctor from the system. The doctor record will be marked as inactive
+        but not permanently removed from the database.
+      operationId: deleteDoctor
+      tags:
+        - Doctors
+      responses:
+        '204':
+          description: Doctor successfully deleted (no content)
+
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_NOT_FOUND"
+                  message: "Doctor with id 9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234 not found"
+                  details: null
+
+        '409':
+          description: Conflict - Cannot delete doctor with active appointments
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_HAS_ACTIVE_APPOINTMENTS"
+                  message: "Cannot delete doctor with active or upcoming appointments"
+                  details:
+                    activeAppointmentsCount: 5
+                    nextAppointmentDate: "2026-02-10T09:00:00Z"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
+
+
+  /doctors/{doctorId}/status:
+    parameters:
+      - name: doctorId
+        in: path
+        required: true
+        description: Unique identifier of the doctor
+        schema:
+          type: string
+          format: uuid
+          example: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+
+    patch:
+      summary: Update doctor active status
+      description: |
+        Activate or deactivate a doctor. Deactivating a doctor will prevent new appointments
+        from being scheduled but will not affect existing appointments.
+      operationId: updateDoctorStatus
+      tags:
+        - Doctors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isActive:
+                  type: boolean
+                  description: New active status
+                  example: false
+              required:
+                - isActive
+            examples:
+              deactivate:
+                summary: Deactivate doctor
+                value:
+                  isActive: false
+
+              activate:
+                summary: Activate doctor
+                value:
+                  isActive: true
+
+      responses:
+        '200':
+          description: Status successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/Doctor'
+              example:
+                id: "9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234"
+                name: "Dr. Anil Sharma"
+                specialization: "Cardiology"
+                registrationNumber: "MCI-123456"
+                yearsOfExperience: 10
+                consultationFee: 500.00
+                contactEmail: "dr.sharma@hospital.com"
+                contactPhone: "+919876543210"
+                clinicAddress: "Apollo Hospital, SG Highway, Ahmedabad, Gujarat 380015"
+                isActive: false
+                createdAt: "2026-02-05T10:15:30Z"
+                updatedAt: "2026-02-05T16:45:00Z"
+
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "DOCTOR_NOT_FOUND"
+                  message: "Doctor with id 9b2e8b4e-3c7f-4c2a-bf63-1a2f8b9c1234 not found"
+                  details: null
+
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+              example:
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Request validation failed"
+                  details:
+                    fields:
+                      - field: "isActive"
+                        message: "Field is required and must be a boolean"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/doctor.yaml#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "INTERNAL_SERVER_ERROR"
+                  message: "An unexpected error occurred while processing your request"
+                  details: null
