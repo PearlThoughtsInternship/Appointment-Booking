@@ -1,0 +1,85 @@
+openapi: 3.0.3
+
+info:
+  title: Appointment Booking API
+  description: |
+    API contracts for Appointment Booking System
+    
+    This API provides endpoints for managing doctor registrations, profiles, and availability
+    in a healthcare appointment booking system. It supports CRUD operations for doctor records,
+    filtering and searching capabilities, and status management.
+    
+    **Key Features:**
+    - Doctor registration and profile management
+    - Specialization-based filtering
+    - Pagination support for large datasets
+    - Active status management
+    - Comprehensive validation and error handling
+    
+    **Base URL:** http://localhost:3000/api/v1
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@appointmentbooking.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+  - url: https://staging-api.appointmentbooking.com/api/v1
+    description: Staging environment
+  - url: https://api.appointmentbooking.com/api/v1
+    description: Production environment
+
+tags:
+  - name: Doctors
+    description: Doctor management operations including registration, updates, and status management
+  - name: Patients
+    description: Patient management operations
+  - name: Appointments
+    description: Appointment scheduling and management operations
+
+paths:
+  # Doctor paths
+  /doctors:
+    $ref: './paths/doctors.yaml#/paths/~1doctors'
+  
+  /doctors/{doctorId}:
+    $ref: './paths/doctors.yaml#/paths/~1doctors~1{doctorId}'
+  
+  /doctors/{doctorId}/status:
+    $ref: './paths/doctors.yaml#/paths/~1doctors~1{doctorId}~1status'
+
+components:
+  schemas:
+    # Doctor schemas
+    Doctor:
+      $ref: './schemas/doctor.yaml#/components/schemas/Doctor'
+    
+    DoctorCreateRequest:
+      $ref: './schemas/doctor.yaml#/components/schemas/DoctorCreateRequest'
+    
+    DoctorUpdateRequest:
+      $ref: './schemas/doctor.yaml#/components/schemas/DoctorUpdateRequest'
+    
+    DoctorListResponse:
+      $ref: './schemas/doctor.yaml#/components/schemas/DoctorListResponse'
+    
+    # Common error schemas
+    ErrorResponse:
+      $ref: './schemas/doctor.yaml#/components/schemas/ErrorResponse'
+    
+    ValidationErrorResponse:
+      $ref: './schemas/doctor.yaml#/components/schemas/ValidationErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT authentication token
+
+security:
+  - bearerAuth: []
