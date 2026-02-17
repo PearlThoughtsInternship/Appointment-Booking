@@ -10,6 +10,7 @@ node_modules
 
 # IDEs and editors
 /.idea
+**/.idea
 .project
 .classpath
 .c9/
@@ -52,3 +53,6 @@ build/
 # Next.js
 .next
 out
+
+# env files
+.env

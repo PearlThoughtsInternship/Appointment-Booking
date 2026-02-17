@@ -1,0 +1,53 @@
+{
+  "name": "backend-java",
+  "projectType": "application",
+  "sourceRoot": "apps/backend-java/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew clean build",
+        "cwd": "apps/backend-java"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew test",
+        "cwd": "apps/backend-java"
+      }
+    },
+    "run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew bootRun",
+        "cwd": "apps/backend-java"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew check",
+        "cwd": "apps/backend-java"
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew clean",
+        "cwd": "apps/backend-java"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./gradlew bootRun",
+        "cwd": "apps/backend-java"
+      }
+    }
+  },
+  "tags": [
+    "type:backend",
+    "language:java"
+  ]
+}
